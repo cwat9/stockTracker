@@ -1,0 +1,38 @@
+x1. create db queries for
+    xa. Company (needs script)
+    xb. StockExchange
+    xc. Stock (needs script)
+    xd. News (needs script) (might need to query on demand or query for a few stocks)
+    xe. StockIndex
+    xf. StockToNews (needs script or query for a few stocks)
+    xh. StockToIndex (needs script or query for a few stocks)
+    xi. InstitutionalHolders (needs script)
+    xj. StockToInstitutionalHolders (needs script)
+    xk. StockPrices (needs script) (might need to query on demand)
+
+x2. fix the query-fixes
+    xa. remove from csv if not in stocks/{exchange}
+
+x3. project phase 2
+    xa. push company-db
+    xb. push instHolders
+    xc. push stockToInstHolders
+    xd. get historical stock price (1 stock)
+    xe. add 20 queries
+        x1. return stocks with current price above 50
+        x2. return companies in US
+        x3. return date where volume above x
+        x4. return date where stock price above x
+
+x4. misc
+    xa. move csv to seperate folders
+    xb. add python scripts
+    xc. csv -> sqlite3 db
+    xd. upload load.sql
+
+x5. phase 3
+    xa. html 
+    xb. css
+    xc. js 
+    xd. python
+    xe. sql
