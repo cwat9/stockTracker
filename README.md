@@ -18,6 +18,10 @@ pip install -r requirements.txt
 
 To run, in terminal enter:
 ```
+cd project-v2
+```
+then enter:
+```
 python app.py
 ```
 
