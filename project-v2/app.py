@@ -125,73 +125,73 @@ def company_info(symbol):
         # Query the database to retrieve the company with the specified stock symbol
         company = Company.query.filter(Company.StockSymbol == symbol).first()
         stock = Stock.query.filter(Stock.StockSymbol == symbol).first()
-        news = News.query.filter(News.StockSymbol == symbol).all()
-        chart = ""
+        # news = News.query.filter(News.StockSymbol == symbol).all()
+        # chart = ""
 
-        if company is not None:
-            conn = sqlite3.connect('instance/data.sqlite')
+        # if company is not None:
+        #     conn = sqlite3.connect('instance/data.sqlite')
 
-            # Query the data from the SQLite database
-            query = f"SELECT Date, Price FROM StockPrices WHERE StockSymbol = '{symbol}'"
-            df = pd.read_sql_query(query, conn)
+        #     # Query the data from the SQLite database
+        #     query = f"SELECT Date, Price FROM StockPrices WHERE StockSymbol = '{symbol}'"
+        #     df = pd.read_sql_query(query, conn)
 
-            if df.empty:
-                # Fetch stock data using yfinance if the stock data is not in the database
-                stock_info = yf.Ticker(symbol)
-                hist = stock_info.history(period="5000mo")
+        #     if df.empty:
+        #         # Fetch stock data using yfinance if the stock data is not in the database
+        #         stock_info = yf.Ticker(symbol)
+        #         hist = stock_info.history(period="5000mo")
 
-                # Save the DataFrame to the database
-                for index, row in hist.iterrows():
-                    new_date = str(index) + "|" + str(symbol)
-                    new_stock_price = StockPrice(Date= new_date, StockSymbol=symbol.upper(), Price=row['Close'], Volume=row['Volume'])
-                    db.session.add(new_stock_price)
-                db.session.commit()
+        #         # Save the DataFrame to the database
+        #         for index, row in hist.iterrows():
+        #             new_date = str(index) + "|" + str(symbol)
+        #             new_stock_price = StockPrice(Date= new_date, StockSymbol=symbol.upper(), Price=row['Close'], Volume=row['Volume'])
+        #             db.session.add(new_stock_price)
+        #         db.session.commit()
 
-                # plot stock prices
-                df['Date'] = pd.to_datetime(df['Date'].str.split('|').str[0])
-                fig = Figure()
-                axis = fig.add_subplot(1, 1, 1)
-                xs = df["Date"]
-                ys = df['Price']
-                axis.plot(xs, ys)
-                axis.set_xlabel('Date')
-                axis.set_ylabel('Price')
-                axis.set_title(f'Stock Price vs. Date for {symbol}')
-                output = io.BytesIO()
-                FigureCanvas(fig).print_png(output)
-                chart = base64.b64encode(output.getvalue()).decode('utf-8')
-            else:
-                # works, but will be very slow
-                # stock_info = yf.Ticker(symbol)
-                # hist = stock_info.history(period="5000mo")
+        #         # plot stock prices
+        #         df['Date'] = pd.to_datetime(df['Date'].str.split('|').str[0])
+        #         fig = Figure()
+        #         axis = fig.add_subplot(1, 1, 1)
+        #         xs = df["Date"]
+        #         ys = df['Price']
+        #         axis.plot(xs, ys)
+        #         axis.set_xlabel('Date')
+        #         axis.set_ylabel('Price')
+        #         axis.set_title(f'Stock Price vs. Date for {symbol}')
+        #         output = io.BytesIO()
+        #         FigureCanvas(fig).print_png(output)
+        #         chart = base64.b64encode(output.getvalue()).decode('utf-8')
+        #     else:
+        #         # works, but will be very slow
+        #         # stock_info = yf.Ticker(symbol)
+        #         # hist = stock_info.history(period="5000mo")
                 
-                # for index, row in hist.iterrows():
-                #     new_date = str(index) + "|" + str(symbol)
+        #         # for index, row in hist.iterrows():
+        #         #     new_date = str(index) + "|" + str(symbol)
 
-                #     # Check if the data already exists in the database
-                #     existing_data = StockPrice.query.filter_by(Date=new_date, StockSymbol=symbol.upper()).first()
+        #         #     # Check if the data already exists in the database
+        #         #     existing_data = StockPrice.query.filter_by(Date=new_date, StockSymbol=symbol.upper()).first()
 
-                #     if existing_data is None:
-                #         # If the data does not exist, add it to the database
-                #         new_stock_price = StockPrice(Date=new_date, StockSymbol=symbol.upper(), Price=row['Close'], Volume=row['Volume'])
-                #         db.session.add(new_stock_price)
-                #         db.session.commit()
+        #         #     if existing_data is None:
+        #         #         # If the data does not exist, add it to the database
+        #         #         new_stock_price = StockPrice(Date=new_date, StockSymbol=symbol.upper(), Price=row['Close'], Volume=row['Volume'])
+        #         #         db.session.add(new_stock_price)
+        #         #         db.session.commit()
 
-                # plot stock prices
-                df['Date'] = pd.to_datetime(df['Date'].str.split('|').str[0])
-                fig = Figure()
-                axis = fig.add_subplot(1, 1, 1)
-                xs = df["Date"]
-                ys = df['Price']
-                axis.plot(xs, ys)
-                axis.set_xlabel('Date')
-                axis.set_ylabel('Price')
-                axis.set_title(f'Stock Price vs. Date for {symbol}')
-                output = io.BytesIO()
-                FigureCanvas(fig).print_png(output)
-                chart = base64.b64encode(output.getvalue()).decode('utf-8')
+        #         # plot stock prices
+        #         df['Date'] = pd.to_datetime(df['Date'].str.split('|').str[0])
+        #         fig = Figure()
+        #         axis = fig.add_subplot(1, 1, 1)
+        #         xs = df["Date"]
+        #         ys = df['Price']
+        #         axis.plot(xs, ys)
+        #         axis.set_xlabel('Date')
+        #         axis.set_ylabel('Price')
+        #         axis.set_title(f'Stock Price vs. Date for {symbol}')
+        #         output = io.BytesIO()
+        #         FigureCanvas(fig).print_png(output)
+        #         chart = base64.b64encode(output.getvalue()).decode('utf-8')
 
-        return render_template('company-info.html', data=company, data2=stock, data3=news, img_data=chart)
+        return render_template('company-info.html', data=company, data2=stock) # , data3=news, img_data=chart
     except Exception as e:
         return render_template('index.html', error=str(e))
 
